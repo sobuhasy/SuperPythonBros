@@ -1,16 +1,35 @@
-# This is a sample Python script.
+import os
+import random
+import math
+import pygame
+from os import listdir
+from os.path import isfile, join
+pygame.init()
 
-# Press Umschalt+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+pygame.display.set_caption("SuperPythonBros")
+
+BG_COLOR = (168, 241, 245)
+WIDTH, HEIGHT = 1000, 800
+FPS = 45
+PLAYER_VEL = 4
+
+window = pygame.display.set_mode((WIDTH, HEIGHT))
+
+def main(window):
+    clock = pygame.time.Clock()
+
+    run = True
+    while run:
+        clock.tick(FPS)
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                run = False
+                break
+
+    pygame.quit()
+    quit()
 
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Strg+F8 to toggle the breakpoint.
-
-
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+if __name__ == "__main__":
+    main(window)
