@@ -166,7 +166,8 @@ def main(window):
     block_size = 96
 
     player = Player(100, 100, 50, 50)
-    blocks = [Block(0, HEIGHT - block_size, block_size)]
+    floor = [Block(i * block_size, HEIGHT - block_size, block_size)
+             for i in range(-WIDTH // block_size, (WIDTH * 2) // block_size)]
 
     run = True
     while run:
@@ -179,7 +180,7 @@ def main(window):
 
         player.loop(FPS)
         handle_move(player)
-        draw(window, background, bg_image, player, blocks)
+        draw(window, background, bg_image, player, floor)
 
     pygame.quit()
     quit()
