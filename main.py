@@ -151,6 +151,34 @@ class Block(Object):
         self.image.blit(block, (0, 0))
         self.mask = pygame.mask.from_surface(self.image)
 
+class Obstacle(Object):
+    ANIMATION_DELAY = 3
+    def __init__(x, y, width, height):
+        super().__init__(self, x, y, width, height, "fan")
+        self.fan = load_sprite_sheets("Traps", "Fan", width, height)
+        self.image = self.fan["Off"][0]
+        self.mask = pygame.mask.from_surface(self.image)
+        self.animation_count = 0
+        self.animation_name = "Off"
+
+    def on(self):
+        self.animation_name = "On (24x8)"
+
+    def off(self):
+        self.animation_name = "Off"
+
+    def loop(self):
+
+        sprites = self.fan[self.animation_name]
+        sprite_index = (self.animation_count // self.ANIMATION_DELAY) % len(sprites)
+        self.image = sprites[sprite_index]
+        self.animation_count += 1
+
+        self.rect = self.sprite.get_rect(topleft = (self.rect.x, self.rect.y))
+        self.mask = pygame.mask.from_surface(self.sprite)
+
+        if self.animation_count // self.ANIMATION_DELAY > len(sprites):
+            self.animation_count = 0
 
 def get_background(name):
     image = pygame.image.load(join("assets", "Background", name))
@@ -224,10 +252,12 @@ def main(window):
     block_size = 96
 
     player = Player(100, 100, 50, 50)
+    fan = Obstacle(100, HEIGHT - block_size - 24, 8, 24)
+    fan.on()
     floor = [Block(i * block_size, HEIGHT - block_size, block_size)
              for i in range(-WIDTH // block_size, (WIDTH * 2) // block_size)]
     objects = [*floor, Block(0, HEIGHT - block_size * 2, block_size),
-               Block(block_size * 3, HEIGHT - block_size * 4, block_size)]
+               Block(block_size * 3, HEIGHT - block_size * 4, block_size), fan]
 
     offset_x = 0
     scroll_area_width = 200
