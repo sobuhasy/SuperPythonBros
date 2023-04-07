@@ -190,13 +190,30 @@ def handle_vertical_collision(player, objects, dy):
 
     return collided_objects
 
+def collide(player, objects, dx):
+    player.move(dx, 0)
+    player.update()
+    collided_objects = None
+    for obj in objects:
+        if pygame.sprite.collide_mask(player, obj):
+            collided_objects = obj
+            break
+
+    player.move(-dx, 0)
+    player.update()
+    return collided_objects
+
+
 def handle_move(player, objects):
     keys = pygame.key.get_pressed()
 
     player.x_vel = 0
-    if keys[pygame.K_LEFT]:                 # if the player presses the left key
+    collide_left = collide(player, objects, -PLAYER_VEL)
+    collide_right = collide(player, objects, PLAYER_VEL)
+
+    if keys[pygame.K_LEFT] and not collide_left:                 # if the player presses the left key
         player.move_left(PLAYER_VEL)        # character moves left
-    if keys[pygame.K_RIGHT]:                # if the player presses the right key
+    if keys[pygame.K_RIGHT] and not collide_right:                # if the player presses the right key
         player.move_right(PLAYER_VEL)       # character moves right
 
     handle_vertical_collision(player, objects, player.y_vel)
