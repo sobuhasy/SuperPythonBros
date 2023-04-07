@@ -11,7 +11,7 @@ pygame.display.set_caption("SuperPythonBros")
 BG_COLOR = (168, 241, 245)
 WIDTH, HEIGHT = 1000, 800
 FPS = 45
-PLAYER_VEL = 4
+PLAYER_VEL = 6
 
 window = pygame.display.set_mode((WIDTH, HEIGHT))
 
